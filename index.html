@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>浆料添加量计算器</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        .input-group { margin: 10px 0; }
+        input { width: 100%; padding: 8px; margin-top: 5px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; cursor: pointer; }
+        #result { font-weight: bold; color: #dc3545; }
+        .error { color: red; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h3>浆料添加量计算器</h3>
+    <div class="input-group">
+        <label>固含量（%，示例：50% → 输入50）<input type="number" id="solid" step="0.1" required></label>
+        <div id="solidError" class="error"></div>
+    </div>
+    <div class="input-group">
+        <label>添加比例（%，示例：5% → 输入5）<input type="number" id="ratio" step="0.1" required></label>
+        <div id="ratioError" class="error"></div>
+    </div>
+    <div class="input-group">
+        <label>浆料重量（kg）<input type="number" id="weight" step="0.1" required></label>
+        <div id="weightError" class="error"></div>
+    </div>
+    <button onclick="calculate()">计算添加量</button>
+    <p>计算结果：<span id="result">0.00</span> kg</p >
+
+    <script>
+        function validateInput(value, field) {
+            const errorElement = document.getElementById(`${field}Error`);
+            if (value <= 0 || isNaN(value)) {
+                errorElement.textContent = "请输入有效正数";
+                return false;
+            }
+            errorElement.textContent = "";
+            return true;
+        }
+
+        function calculate() {
+            const solid = parseFloat(document.getElementById("solid").value);
+            const ratio = parseFloat(document.getElementById("ratio").value);
+            const weight = parseFloat(document.getElementById("weight").value);
+
+            if (!validateInput(solid, "solid") || !validateInput(ratio, "ratio") || !validateInput(weight, "weight")) return;
+
+            const addAmount = (solid / 100) * (ratio / 100) * weight;
+            document.getElementById("result").textContent = addAmount.toFixed(4);
+        }
+    </script>
+</body>
+</html>
